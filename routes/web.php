@@ -1,67 +1,20 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AnimalController;
-use App\Http\Controllers\AtendimentoController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Aqui ficam todas as rotas do projeto.
-|
-*/
-
-// --------------------
-// Página inicial
-// --------------------
 Route::get('/', function () {
-    return view('home');
-})->name('home');
+    return view('welcome');
+});
 
-// --------------------
-// Páginas estáticas
-// --------------------
-Route::view('/sobre', 'sobre')->name('sobre');
-Route::view('/contato', 'contato')->name('contato');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// --------------------
-// Animais
-// --------------------
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-// Criar
-Route::get('/novo-pet', [AnimalController::class, 'create'])
-    ->name('animais.create');
-
-// Listar
-Route::get('/meus-animais', [AnimalController::class, 'index'])
-    ->name('animais.index');
-
-// Salvar
-Route::post('/novo-pet', [AnimalController::class, 'store'])
-    ->name('animais.store');
-
-// Editar
-Route::get('/animais/{id}/editar', [AnimalController::class, 'edit'])
-    ->name('animais.edit');
-
-// Atualizar
-Route::put('/animais/{id}', [AnimalController::class, 'update'])
-    ->name('animais.update');
-
-// Excluir
-Route::delete('/animais/{id}', [AnimalController::class, 'destroy'])
-    ->name('animais.destroy');
-
-// --------------------
-// Atendimentos
-// --------------------
-
-// Mostrar formulário + lista de atendimentos
-Route::get('/atendimentos', [AtendimentoController::class, 'create'])
-    ->name('atendimentos.index'); // GET /atendimentos
-
-// Salvar atendimento
-Route::post('/atendimentos', [AtendimentoController::class, 'store'])
-    ->name('atendimentos.store');
+require __DIR__.'/auth.php';

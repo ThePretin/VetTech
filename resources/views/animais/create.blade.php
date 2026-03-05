@@ -54,7 +54,7 @@
 
             <!-- id_usuario automático -->
             <input type="hidden" name="id_usuario" value="{{ Auth::id() }}">
-
+            <input type="hidden" name="id_usuario" value="{{ Auth::id() }}">
             <div class="mt-4">
                 <button type="submit" class="btn btn-success">
                     Salvar

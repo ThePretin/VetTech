@@ -13,12 +13,11 @@ class AnimalController extends Controller
     public function index()
     {
         $animais = Animal::all();
-
         return view('animais.index', compact('animais'));
     }
 
     // --------------------
-    // Mostrar formulário de criação
+    // Mostrar formulário
     // --------------------
     public function create()
     {
@@ -33,9 +32,20 @@ class AnimalController extends Controller
         $request->validate([
             'nome' => 'required|string|max:255',
             'especie' => 'required|string|max:255',
+            'raca' => 'nullable|string|max:255',
+            'cor' => 'nullable|string|max:255',
+            'data_nascimento' => 'nullable|date',
+            'porte' => 'required|string',
         ]);
 
-        Animal::create($request->all());
+        Animal::create([
+            'nome' => $request->nome,
+            'especie' => $request->especie,
+            'raca' => $request->raca,
+            'cor' => $request->cor,
+            'data_nascimento' => $request->data_nascimento,
+            'porte' => $request->porte,
+        ]);
 
         return redirect()
             ->route('animais.index')
@@ -43,27 +53,38 @@ class AnimalController extends Controller
     }
 
     // --------------------
-    // Mostrar formulário de edição
+    // Editar
     // --------------------
     public function edit($id)
     {
         $animal = Animal::findOrFail($id);
-
         return view('animais.edit', compact('animal'));
     }
 
     // --------------------
-    // Atualizar animal
+    // Atualizar
     // --------------------
     public function update(Request $request, $id)
     {
         $request->validate([
             'nome' => 'required|string|max:255',
             'especie' => 'required|string|max:255',
+            'raca' => 'nullable|string|max:255',
+            'cor' => 'nullable|string|max:255',
+            'data_nascimento' => 'nullable|date',
+            'porte' => 'required|string',
         ]);
 
         $animal = Animal::findOrFail($id);
-        $animal->update($request->all());
+
+        $animal->update([
+            'nome' => $request->nome,
+            'especie' => $request->especie,
+            'raca' => $request->raca,
+            'cor' => $request->cor,
+            'data_nascimento' => $request->data_nascimento,
+            'porte' => $request->porte,
+        ]);
 
         return redirect()
             ->route('animais.index')
@@ -71,7 +92,7 @@ class AnimalController extends Controller
     }
 
     // --------------------
-    // Excluir animal
+    // Excluir
     // --------------------
     public function destroy($id)
     {

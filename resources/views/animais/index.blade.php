@@ -30,7 +30,7 @@
                     <td>{{ $animal->raca }}</td>
                     <td>
                         <a href="{{ route('animais.edit', $animal->id) }}"
-                           class="btn btn-warning btn-sm">
+                            class="btn btn-warning btn-sm">
                             Editar
                         </a>
 
